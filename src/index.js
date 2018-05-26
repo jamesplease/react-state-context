@@ -1,11 +1,11 @@
 
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import createReactContext from 'create-react-context';
 
 export default function createStateContext(actions = {}, initialState = null) {
   const Context = createReactContext();
 
-  class ProviderComponent extends PureComponent {
+  class ProviderComponent extends Component {
     render() {
       const { children } = this.props;
 
@@ -47,7 +47,9 @@ export default function createStateContext(actions = {}, initialState = null) {
           continue;
         }
 
-        boundActions[key] = action(this.setState, () => this.state);
+        boundActions[key] = action(
+          (one, two) => this.setState(one, two),
+          () => this.state);
       }
 
       this.actions = boundActions;
