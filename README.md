@@ -132,36 +132,72 @@ const TodoContext = createStateContext(todoActions, {
 });
 ```
 
+Once you have a StateContext, you can use it as you would any other Context.
+
+```jsx
+import TodoContext from './contexts/todo';
+
+export function App() {
+  // First, you must set up the Provider somewhere high in our Component tree.
+  return (
+    <TodoContext.Provider>
+      <SomeComponent/>
+    </TodoContext.Provider>
+  );
+}
+```
+
+```jsx
+import TodoContext from './contexts/todo';
+
+export function DeeplyNestedChild() {
+  // From anywhere within the Provider, you can access the value of the StateContext.
+  return (
+    <TodoContext.Consumer>
+      {value => {
+        console.log('The current state is', value.state);
+        console.log('All of the todos are here', value.state.todos);
+
+        console.log('I can add a todo using:', value.createTodo);
+        console.log('I can retrieve todos using:', value.getTodo);
+      }}
+    </TodoContext.Consumer>
+  );
+}
+```
+
 ## FAQ
 
-#### Do I need to use React 16.3.0 for this?
+#### Do I need to be using React >= 16.3.0 for this?
 
 You don't! This library is built on top of the excellent [create-react-context](https://github.com/jamiebuilds/create-react-context) library,
-which means you can use it with React v0.14, v15, or v16.
+which means you can use it as far back as React v0.14.
 
 #### Why use this over Redux?
 
-The reason that I initially adopted Redux was to share data between components. Although Redux can seem like a simple system once you become
-familiar with it, the number of concepts it introduces can make it seem daunting to newcomers. At least, that is how I felt when learning it.
+The reason that I initially started using Redux was to more easily share data between components. Although Redux can seem like a simple system once you become
+familiar with it, the number of concepts it has can make it daunting to newcomers. At least, that's how I felt when I was learning it.
 
-For me, React State Context solves the problems that I originally used Redux for, with fewer concepts to learn.
+For me, React State Context solves the problems that I originally used Redux for in a more straightforward way, which is why I prefer it.
 
 #### What do you lose by not using Redux?
 
-The Redux library supports middleware, and it enables time travel debugging, which are both things that you do not get from React State Context. Outside
-of the Redux source code itself, there is an enormous community around Redux, and there are considerable benefits to using a library that has such a
-large number of users. You will lose that community by switching to this library.
+The Redux library supports middleware, and it enables time travel debugging, which are both things that you do not get from React State Context. If you
+rely heavily on those features of Redux, then this library may not be suitable for your needs.
 
-With that said, React State Context is built on top of React's built-in Context API. Although this API is still new to many developers, we believe that
-it will one day become as familiar to React developers.
+Outside of the Redux source code itself, there is an enormous community around that library. There are considerable benefits to using a library that has such a
+large number of users, and you will lose that community by switching to this library, or most other alternative state management libraries, for that matter.
+
+With that said, React State Context is built on top of React's built-in Context API. Although the new Context API is likely not very familiar to most React
+developers today, we believe that that will change as time goes on.
 
 #### How is this different from Unstated?
 
-[Unstated](https://github.com/jamiebuilds/unstated) is a fantastic library, and it served as inspiration for us. The primary difference is that
+[Unstated](https://github.com/jamiebuilds/unstated) is a fantastic library, and it served as inspiration for this library. The primary difference is that
 Unstated introduces new concepts for state management, like `Container` and `Subscribe`. One of the design goals of React State Context was to avoid
-introducing additional concepts in an effort to reduce the learning curve.
+introducing additional concepts whenever possible in an effort to reduce the learning curve.
 
-We believe that it's possible to avoid introducing those new concepts while still getting a remarkably similar developer experience. Perhaps you will
+We believe that we avoided introducing those new concepts while still getting a remarkably similar developer experience. Perhaps you will
 feel the same way!
 
 ## Contributing
