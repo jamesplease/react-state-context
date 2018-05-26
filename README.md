@@ -29,7 +29,7 @@ As delightful as the Context API is, it is a low-level tool, so using it directl
 It also doesn't provide opinions on _how_ it should be used, so it can take some time to figure out an organized system for
 working with it. This is where **React State Context** comes in.
 
-React State Context is a small wrapper around Context that provides you with a small amount of structure. This structure
+React State Context is a thin wrapper around Context that provides a small amount of structure. This structure
 helps reduce the boilerplate that you must write, and it also helps you to stay organized.
 
 ### Installation
