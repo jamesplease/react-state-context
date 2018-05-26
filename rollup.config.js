@@ -7,7 +7,7 @@ import replace from 'rollup-plugin-replace';
 var env = process.env.NODE_ENV;
 var config = {
   output: {
-    name: 'ReactComposer',
+    name: 'createStateContext',
     globals: {
       react: 'React'
     },
