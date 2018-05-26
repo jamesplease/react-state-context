@@ -160,7 +160,7 @@ Along with `state`, the actions that you define will be included in the `value` 
 </MyStateContext.Consumer>
 ```
 
-Once you feel comfortable with these concepts, you should be ready to start using React State Context!
+Once you feel comfortable with these concepts, you should be ready to start using React State Context.
 
 ## API
 
