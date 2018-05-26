@@ -171,19 +171,22 @@ export function DeeplyNestedChild() {
 
 ## FAQ
 
-#### Do I need to be using React >= 16.3.0 for this?
+#### What version of React is required?
 
-You don't! This library is built on top of the excellent [create-react-context](https://github.com/jamiebuilds/create-react-context) library,
-which means you can use it as far back as React v0.14.
+You need to be using at least React v0.14.
 
-#### Why use this over Redux?
+Although the new Context API was introduced in 16.3.0, this library is built using the excellent
+[create-react-context](https://github.com/jamiebuilds/create-react-context) library, which polyfills the
+API for older React versions.
+
+#### Why would someone use this over Redux?
 
 The reason that I initially started using Redux was to more easily share data between components. Although Redux can seem like a simple system once you become
 familiar with it, the number of concepts it has can make it daunting to newcomers. At least, that's how I felt when I was learning it.
 
 For me, React State Context solves the problems that I originally used Redux for in a more straightforward way, which is why I prefer it.
 
-#### What do you lose by not using Redux?
+#### What does one lose by migrating away from Redux?
 
 The Redux library supports middleware, and it enables time travel debugging, which are both things that you do not get from React State Context. If you
 rely heavily on those features of Redux, then this library may not be suitable for your needs.
