@@ -28,7 +28,7 @@ It also doesn't provide opinions on _how_ it should be used, so it can take some
 working with it. Which is where **React State Context** comes in.
 
 React State Context is a small wrapper around Context that provides you with a small amount of structure. This structure
-not only reduces the boilerplate that you must write, but it also helps you to stay organized.
+helps reduce the boilerplate that you must write, and it also helps you to stay more organized.
 
 ### Installation
 
