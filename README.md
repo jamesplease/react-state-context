@@ -46,7 +46,7 @@ yarn add react-state-context
 
 ## Concepts
 
-React State Context has three concepts you need to learn about before getting started with it.
+React State Context has three concepts.
 
 ### StateContext
 
@@ -54,7 +54,7 @@ A StateContext is a wrapper around a normal React Context object. Like a regular
 `Provider` and `Consumer`.
 
 You use StateContexts in the same way as regular Context. If you have used the new Context API, then it should feel
-familiar to use StateContexts. If you haven't, don't worry – if I was able to learn it, then you can, too!
+familiar to use StateContexts. If you haven't, don't worry. If I was able to learn it, then you can, too!
 
 What is different about a StateContext is that the value that the Consumer provides you with has the
 following structure:
@@ -112,7 +112,7 @@ const createTodo = function(setState, getState) {
 }
 ```
 
-If you are comfortable using arrow functions, you may prefer writing the above action in the following way:
+If you are comfortable using arrow functions, you may prefer to write the above action in the following way:
 
 ```js
 const createTodo = (setState, getState) => (newTodo) => {
@@ -126,7 +126,7 @@ const createTodo = (setState, getState) => (newTodo) => {
 }
 ```
 
-We recommend defining the actions for each indiividual StateContexts on an object. Here is an example actions object for a
+We recommend defining the actions for each individual StateContexts on an object. Here is an example actions object for a
 StateContext that manages a list of todos:
 
 ```js
@@ -166,7 +166,7 @@ This library has one, default export: `createStateContext`.
 
 ### `createStateContext( actions, initialState )`
 
-Creates a [StateContext](#state-context).
+This function creates and returns a [StateContext](#state-context).
 
 - `actions` [Object]: The actions that modify the state.
 - `initialState` [any]: The initial state of the StateContext
@@ -185,7 +185,7 @@ Once you have a StateContext, you can use it as you would any other Context.
 import TodoContext from './contexts/todo';
 
 export function App() {
-  // First, you must set up the Provider somewhere high in our Component tree.
+  // To begin, you must render the Provider somewhere high up in the Component tree.
   return (
     <TodoContext.Provider>
       <SomeComponent/>
@@ -249,10 +249,6 @@ introducing additional concepts whenever possible in an effort to reduce the lea
 
 We believe that we avoided introducing those new concepts while still getting a remarkably similar developer experience. Perhaps you will
 feel the same way!
-
-## Limitations
-
-Because it is built on top of React Context, the same problems that you encounter when using Context apply
 
 ## Contributing
 
