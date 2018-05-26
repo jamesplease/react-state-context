@@ -105,7 +105,7 @@ const createTodo = function(setState, getState) {
     const clonedTodos = [...getState().todos];
 
     setState({
-      todos: clonedTodos.push(newTodo);
+      todos: clonedTodos.push(newTodo)
     });
 
     // If you would like, you can return a value from your actions.
@@ -121,7 +121,7 @@ const createTodo = (setState, getState) => (newTodo) => {
   const clonedTodos = [...getState().todos];
 
   setState({
-    todos: clonedTodos.push(newTodo);
+    todos: clonedTodos.push(newTodo)
   });
 
   return newTodo;
@@ -137,7 +137,7 @@ const todoActions = {
     const clonedTodos = [...getState().todos];
 
     setState({
-      todos: clonedTodos.push(newTodo);
+      todos: clonedTodos.push(newTodo)
     });
 
     return newTodo;
