@@ -20,11 +20,11 @@ An inherent limitation of component state is that it can be tedious to share it 
 that are not near one another within your application's component tree. As your application grows,
 this problem may become more pronounced.
 
-React provides an API to solve this problem: [Context](https://reactjs.org/docs/context.html). Context is a
+React provides an API to solve this problem: **[Context](https://reactjs.org/docs/context.html)**. Context is a
 mechanism to more easily share data between components that are not close.
 
 As delightful as the Context API is, it is a low-level tool, so using it directly can be verbose. That's where
-React State Context comes in.
+**React State Context** comes in.
 
 React State Context is a small wrapper around Context that provides you with a little bit of structure. This can reduce
 the boilerplate that you write, so that you can spend more time developing your application.
@@ -49,12 +49,14 @@ React State Context has three concepts you need to learn about before getting st
 
 ### StateContext
 
-A `StateContext` is a wrapper around a normal React Context object. Like a regular Context object, it has two keys: `Provider` and `Consumer`.
+A StateContext is a wrapper around a normal React Context object. Like a regular Context object, it has two properties:
+`Provider` and `Consumer`.
 
-StateContexts are used in the same way as regular Context. If you have used the new Context API, then it should feel
-familiar to use StateContexts. If you haven't, then don't worry – if I can learn it, then you can, too!
+You use StateContexts in the same way as regular Context. If you have used the new Context API, then it should feel
+familiar to use StateContexts. If you haven't, then don't worry – if I was able to learn it, then you can, too!
 
-What is different about a StateContext is that the Consumer provides you with a value with the following structure:
+What is different about a StateContext is that the Consumer provides you with a value that _always_ has the
+following structure:
 
 ```
 {
@@ -131,19 +133,19 @@ const TodoContext = createStateContext(todoActions, {
 
 ## FAQ
 
-##### Do I need to use React 16.3.0 for this?
+#### Do I need to use React 16.3.0 for this?
 
 You don't! This library is built on top of the excellent [create-react-context](https://github.com/jamiebuilds/create-react-context) library,
 which means you can use it with React v0.14, v15, or v16.
 
-##### Why use this over Redux?
+#### Why use this over Redux?
 
 The reason that I initially adopted Redux was to share data between components. Although Redux can seem like a simple system once you become
 familiar with it, the number of concepts it introduces can make it seem daunting to newcomers. At least, that is how I felt when learning it.
 
 For me, React State Context solves the problems that I originally used Redux for, with fewer concepts to learn.
 
-#### What do you lose by not using a library like Redux?
+#### What do you lose by not using Redux?
 
 The Redux library supports middleware, and it enables time travel debugging, which are both things that you do not get from React State Context. Outside
 of the Redux source code itself, there is an enormous community around Redux, and there are considerable benefits to using a library that has such a
@@ -151,6 +153,15 @@ large number of users. You will lose that community by switching to this library
 
 With that said, React State Context is built on top of React's built-in Context API. Although this API is still new to many developers, we believe that
 it will one day become as familiar to React developers.
+
+#### How is this different from Unstated?
+
+[Unstated](https://github.com/jamiebuilds/unstated) is a fantastic library, and it served as inspiration for us. The primary difference is that
+Unstated introduces new concepts for state management, like `Container` and `Subscribe`. One of the design goals of React State Context was to avoid
+introducing additional concepts in an effort to reduce the learning curve.
+
+We believe that it's possible to avoid introducing those new concepts while still getting a remarkably similar developer experience. Perhaps you will
+feel the same way!
 
 ## Contributing
 
