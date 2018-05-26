@@ -13,19 +13,21 @@ Lightweight state management using React Context.
 
 ## Motivation
 
-When you are getting started with React, storing your application state within an individual Component's [state](https://reactjs.org/docs/state-and-lifecycle.html#adding-local-state-to-a-class)
-tends to work well.
+When you are getting started with React, storing all of your application state within individual Components'
+[state](https://reactjs.org/docs/state-and-lifecycle.html#adding-local-state-to-a-class) tends to work well.
+Component state is really useful!
 
-An inherent limitation of component state is that it can be tedious to share it between components
-that are not near one another within your application's component tree. As your application grows,
-this problem may become more pronounced.
+A limitation of component state is that it can be tedious to share it between components
+that are not near one another within your application's component tree. This problem may become more pronounced
+as your application grows, and as some of your data needs to be made available to a larger number of separated
+components.
 
 React provides an API to solve this problem: **[Context](https://reactjs.org/docs/context.html)**. Context is a
-mechanism to more easily share data between components that are not close.
+mechanism to more easily share data between components, even when they are not close.
 
 As delightful as the Context API is, it is a low-level tool, so using it directly can be a little verbose sometimes.
-It also doesn't provide opinions on _how_ it should be used, so it can take some time to figure out a good system for
-working with it. Which is where **React State Context** comes in.
+It also doesn't provide opinions on _how_ it should be used, so it can take some time to figure out an organized system for
+working with it. This is where **React State Context** comes in.
 
 React State Context is a small wrapper around Context that provides you with a small amount of structure. This structure
 helps reduce the boilerplate that you must write, and it also helps you to stay organized.
