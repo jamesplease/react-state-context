@@ -1,6 +1,6 @@
 {
   "name": "react-state-context",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Lightweight state management using React Context.",
   "main": "lib/index.js",
   "module": "es/index.js",
