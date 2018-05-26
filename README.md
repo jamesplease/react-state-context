@@ -6,9 +6,9 @@
 
 Lightweight state management using React Context.
 
-✔ Built on React primitives
-✔ Provides a familiar API
-✔ Designed with a minimal learning curve in mind
+✔ Built on React primitives  
+✔ Provides a familiar API  
+✔ Designed with a minimal learning curve in mind  
 ✔ Tiny file size
 
 ## Motivation
