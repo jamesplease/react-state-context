@@ -54,7 +54,7 @@ A StateContext is a wrapper around a normal React Context object. Like a regular
 `Provider` and `Consumer`.
 
 You use StateContexts in the same way as regular Context. If you have used the new Context API, then it should feel
-familiar to use StateContexts. If you haven't, then don't worry – if I was able to learn it, then you can, too!
+familiar to use StateContexts. If you haven't, don't worry – if I was able to learn it, then you can, too!
 
 What is different about a StateContext is that the value that the Consumer provides you with has the
 following structure:
@@ -86,19 +86,63 @@ a `StateContext.Consumer`, the value passed to the render prop will include a `s
 Actions are functions that you define where you can update the state using `setState`. If you have used Redux, then you can
 think of them as serving a similar role to action creators.
 
+An action is a function that returns another function. Let's take a look at an example action:
+
+```js
+const createTodo = function(setState, getState) {
+  // You can update the state using `setState`:
+  // setState({ someValue: true })
+  //
+  // To get the current state, you can use `getState`:
+  // const state = getState();
+
+  // Return a function from your action. This is the function that your application will call.
+  // In this action, we allow a user to pass a newTodo to be added to the list of todos.
+  return function(newTodo) {
+    // Shallow clone our todos, so that we do not modify the state
+    const clonedTodos = [...getState().todos];
+
+    setState({
+      todos: clonedTodos.push(newTodo);
+    });
+
+    // If you would like, you can return a value from your actions.
+    return newTodo;
+  }
+}
+```
+
+If you are comfortable using arrow functions, you may prefer writing the above action in the following way:
+
+```js
+const createTodo = (setState, getState) => (newTodo) => {
+  const clonedTodos = [...getState().todos];
+
+  setState({
+    todos: clonedTodos.push(newTodo);
+  });
+
+  return newTodo;
+}
+```
+
 We recommend defining the actions for each indiividual StateContexts on an object. Here is an example actions object for a
 StateContext that manages a list of todos:
 
 ```js
 const todoActions = {
-  createTodo(newTodo) {
-    this.setState({
-      todos: this.state.todos.push(newTodo)
+  createTodo: (setState, getState) => newTodo => {
+    const clonedTodos = [...getState().todos];
+
+    setState({
+      todos: clonedTodos.push(newTodo);
     });
+
+    return newTodo;
   },
 
-  getTodo(id) {
-    return this.state.todos.find(todo => todo.id === id);
+  deleteTodo = (setState, getState) => (id) => {
+    // Implement some logic to delete the todo.
   }
 };
 ```
@@ -109,7 +153,7 @@ Along with `state`, the actions that you define will be included in the `value` 
 <MyStateContext.Consumer>
   {(value) => {
     console.log('I can add a todo using:', value.createTodo);
-    console.log('I can retrieve todos using:', value.getTodo);
+    console.log('I can delete todos using:', value.deleteTodo);
   }}
 </MyStateContext.Consumer>
 ```
@@ -162,7 +206,7 @@ export function DeeplyNestedChild() {
         console.log('All of the todos are here', value.state.todos);
 
         console.log('I can add a todo using:', value.createTodo);
-        console.log('I can retrieve todos using:', value.getTodo);
+        console.log('I can delete todos using:', value.deleteTodo);
       }}
     </TodoContext.Consumer>
   );
@@ -205,6 +249,10 @@ introducing additional concepts whenever possible in an effort to reduce the lea
 
 We believe that we avoided introducing those new concepts while still getting a remarkably similar developer experience. Perhaps you will
 feel the same way!
+
+## Limitations
+
+Because it is built on top of React Context, the same problems that you encounter when using Context apply
 
 ## Contributing
 

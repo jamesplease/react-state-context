@@ -47,7 +47,7 @@ export default function createStateContext(actions = {}, initialState = null) {
           continue;
         }
 
-        boundActions[key] = action.bind(this);
+        boundActions[key] = action(this.setState, () => this.state);
       }
 
       this.actions = boundActions;
