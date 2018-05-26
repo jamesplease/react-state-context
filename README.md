@@ -128,6 +128,8 @@ Creates a [StateContext](#state-context).
 - `initialState` [any]: The initial state of the StateContext
 
 ```js
+import createStateContext from 'react-state-context';
+
 const TodoContext = createStateContext(todoActions, {
   todos: []
 });
