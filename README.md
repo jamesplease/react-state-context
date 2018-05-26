@@ -70,8 +70,8 @@ State and actions are the other two concepts of React State Context. Let's take 
 
 ### State
 
-Every StateContext object has an internal state object. Behind the scenes, it is just a regular Component's state object. When you use
-a `StateContext.Consumer`, you value that you are passed will have a `state` attribute.
+Every StateContext object has an internal state object. Behind the scenes, it is just a regular Component's state object. When you render
+a `StateContext.Consumer`, the value passed to the render prop will include a `state` attribute.
 
 ```jsx
 <MyStateContext.Consumer>
@@ -83,10 +83,11 @@ a `StateContext.Consumer`, you value that you are passed will have a `state` att
 
 ### Actions
 
-Actions are functions that you define where you can update the state using `setState`. If you have used Redux, then they could be
-considered analagous to action creators.
+Actions are functions that you define where you can update the state using `setState`. If you have used Redux, then you can
+think of them as serving a similar role to action creators.
 
-We recommend defining the actions for each of your StateContexts together on an object. Here is an example actions object:
+We recommend defining the actions for each indiividual StateContexts on an object. Here is an example actions object for a
+StateContext that manages a list of todos:
 
 ```js
 const todoActions = {
@@ -102,7 +103,7 @@ const todoActions = {
 };
 ```
 
-These actions will be included in the `value` that you receive from the Consumer:
+Along with `state`, the actions that you define will be included in the `value` that you receive from the Consumer:
 
 ```jsx
 <MyStateContext.Consumer>
