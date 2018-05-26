@@ -164,12 +164,12 @@ Once you feel comfortable with these concepts, you should be ready to start usin
 
 This library has one, default export: `createStateContext`.
 
-### `createStateContext( actions, initialState )`
+### `createStateContext( actions, [initialState] )`
 
-This function creates and returns a [StateContext](#state-context).
+Creates and returns a [StateContext](#state-context).
 
-- `actions` [Object]: The actions that modify the state.
-- `initialState` [any]: The initial state of the StateContext
+- `actions` *[Object]*: The actions that modify the state.
+- `[initialState]` *[any]*: Optional initial state for the StateContext.
 
 ```js
 import createStateContext from 'react-state-context';
