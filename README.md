@@ -13,8 +13,8 @@ Lightweight state management using React Context.
 
 ## Motivation
 
-When you are getting started with React, storing your application state within Component state tends to work
-well.
+When you are getting started with React, storing your application state within an individual Component's [state](https://reactjs.org/docs/state-and-lifecycle.html#adding-local-state-to-a-class)
+tends to work well.
 
 An inherent limitation of component state is that it can be tedious to share it between components
 that are not near one another within your application's component tree. As your application grows,
