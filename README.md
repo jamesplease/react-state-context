@@ -23,11 +23,12 @@ this problem may become more pronounced.
 React provides an API to solve this problem: **[Context](https://reactjs.org/docs/context.html)**. Context is a
 mechanism to more easily share data between components that are not close.
 
-As delightful as the Context API is, it is a low-level tool, so using it directly can be verbose. That's where
-**React State Context** comes in.
+As delightful as the Context API is, it is a low-level tool, so using it directly can be a little verbose sometimes.
+It also doesn't provide opinions on _how_ it should be used, so it can take some time to figure out a good system for
+working with it. Which is where **React State Context** comes in.
 
-React State Context is a small wrapper around Context that provides you with a little bit of structure. This can reduce
-the boilerplate that you write, so that you can spend more time developing your application.
+React State Context is a small wrapper around Context that provides you with a small amount of structure. This reduces
+the boilerplate that you must write, freeing you up to spend more time developing the other parts of your application.
 
 ### Installation
 
@@ -55,7 +56,7 @@ A StateContext is a wrapper around a normal React Context object. Like a regular
 You use StateContexts in the same way as regular Context. If you have used the new Context API, then it should feel
 familiar to use StateContexts. If you haven't, then don't worry – if I was able to learn it, then you can, too!
 
-What is different about a StateContext is that the Consumer provides you with a value that _always_ has the
+What is different about a StateContext is that the value that the Consumer provides you with has the
 following structure:
 
 ```
