@@ -72,7 +72,7 @@ State and actions are the other two concepts of React State Context. Let's take 
 
 ### State
 
-Every StateContext object has an internal state object. Behind the scenes, it is just a regular Component's state object. When you render
+Every StateContext object has an internal state object. Behind the scenes, it is a regular Component's state object. When you render
 a `StateContext.Consumer`, the value passed to the render prop will include a `state` attribute.
 
 ```jsx
