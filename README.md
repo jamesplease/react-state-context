@@ -11,6 +11,8 @@ Lightweight state management using React Context.
 ✔ Designed with a minimal learning curve in mind  
 ✔ Reasonable file size (~2kb gzipped)
 
+> :information_desk_person: Heads up! Dan Abramov proivded some feedback about the current version of this API. I am working on an update to incorporate his feedback. Thanks for visiting!
+
 ## Motivation
 
 When you are getting started with React, storing all of your application state within individual Components'
