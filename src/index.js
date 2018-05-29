@@ -46,8 +46,7 @@ export default function createStateContext(actions = {}, initialState) {
     constructor(...args) {
       super(...args);
 
-      let boundActions = {};
-
+      let actionsToUse = {};
       for (let key in actions) {
         const action = actions[key];
 
@@ -75,9 +74,7 @@ export default function createStateContext(actions = {}, initialState) {
           continue;
         }
 
-        // We pass a wrapper of `setState` to every action that you pass in.
-        // This is what allows you to update the state.
-        boundActions[key] = action(this.setStateWrapper);
+        actionsToUse[key] = (...args) => this.onAction(action(...args));
       }
 
       // The Provider's `value` is this Component's state.
@@ -92,9 +89,74 @@ export default function createStateContext(actions = {}, initialState) {
       // state.
       this.state = {
         state: initialStateToUse,
-        ...boundActions,
+        ...actionsToUse,
       };
     }
+
+    onAction = returnValue => {
+      const returnValueType = typeof returnValue;
+
+      // If the value is undefined, then we have no update to make.
+      if (returnValueType === 'undefined') {
+        return;
+      }
+
+      // If they pass a function, then the action is a thunk. We pass them
+      // the setState wrapper.
+      else if (returnValueType === 'function') {
+        returnValue(this.setStateWrapper);
+      }
+
+      // If it not undefined, nor a function, nor valid, then we log a warning and do nothing.
+      else if (!isValidState(returnValue)) {
+        if (process.env.NODE_ENV !== 'production') {
+          warning(
+            `Warning: StateContext actions must update state to an object or null. You called an action that` +
+              ` set an invalid value. This value has been ignored, and the state has not been updated.`,
+            'INVALID_ACTION_UPDATE'
+          );
+        }
+
+        return;
+      }
+
+      // The last condition is if they return a plain object.
+      // In that situation, we set the state after merging it.
+      else {
+        this.setState(prevState => {
+          const merged = this.getUpdatedState(prevState, returnValue);
+          return merged;
+        });
+      }
+    };
+
+    getUpdatedState = (prevState, newState) => {
+      if (!isValidState(newState)) {
+        if (process.env.NODE_ENV !== 'production') {
+          warning(
+            `Warning: StateContext actions must update state to an object or null. You called an action that` +
+              ` set an invalid value. This value has been ignored, and the state has not been updated.`,
+            'INVALID_ACTION_UPDATE'
+          );
+        }
+
+        return;
+      }
+
+      // To compute the _potential_ new state, we shallow merge the two.
+      let mergedState =
+        newState === null ? null : Object.assign({}, prevState.state, newState);
+
+      // If the previous value and the new value are shallowly equal, then we avoid the update altogether.
+      // In this way, a StateContext.Provider behaves similarly to a PureComponent.
+      if (shallowEquals(prevState.state, mergedState)) {
+        return;
+      }
+
+      return {
+        state: mergedState,
+      };
+    };
 
     // This function is what is called when you call an action.
     // `stateUpdate` is just similar to the first argument of `setState`, in that it can be
@@ -108,42 +170,7 @@ export default function createStateContext(actions = {}, initialState) {
             ? stateUpdate(prevState.state)
             : stateUpdate;
 
-        const newStateType = typeof newState;
-
-        if (typeof newState === 'undefined') {
-          return;
-        }
-
-        if (!isValidState(newState)) {
-          if (process.env.NODE_ENV !== 'production') {
-            warning(
-              `Warning: StateContext actions must update state to an object or null. You called an action that` +
-                ` set an invalid value. This value has been ignored, and the state has not been updated.`,
-              'INVALID_ACTION_UPDATE'
-            );
-          }
-
-          return;
-        }
-
-        // To compute the _potential_ new state, we shallow merge the two.
-        let mergedState =
-          newState === null
-            ? null
-            : Object.assign({}, prevState.state, newState);
-
-        // If the previous value and the new value are shallowly equal, then we avoid the update altogether.
-        // In this way, a StateContext.Provider behaves similarly to a PureComponent.
-        if (shallowEquals(prevState.state, mergedState)) {
-          return;
-        }
-
-        // If we've made it this far, then that means the state was changed in a way that was not
-        // shallowly equal. We update our Component's state, which causes the Provider to rerender,
-        // and then, because the state object changes, all of the Consumers also rerender.
-        return {
-          state: mergedState,
-        };
+        return this.getUpdatedState(prevState, newState);
       });
     };
   }

@@ -2,7 +2,13 @@ import React from 'react';
 import createStateContext from '../src';
 
 const defaultActions = {
-  increment: setState => () => {
+  setValue() {
+    return {
+      number: 10,
+    };
+  },
+
+  increment: () => setState => {
     setState(prevState => {
       return {
         number: prevState.number + 1,
@@ -10,7 +16,7 @@ const defaultActions = {
     });
   },
 
-  updateToTheSame: setState => () => {
+  updateToTheSame: () => setState => {
     setState(prevState => {
       return {
         number: prevState.number,
@@ -18,13 +24,15 @@ const defaultActions = {
     });
   },
 
-  badAction: setState => () => {
+  badAction() {
+    return [];
+  },
+
+  badThunkAction: () => setState => {
     setState([]);
   },
 
-  setsUndefined: setState => () => {
-    setState();
-  },
+  returnsUndefined() {},
 };
 
 export default function createTestComponents(
@@ -43,9 +51,11 @@ export default function createTestComponents(
         return (
           <div>
             <span>The number is: {value.state.number}</span>
+            <button onClick={value.setValue}>Set value</button>
             <button onClick={value.increment}>Increment value</button>
             <button onClick={value.badAction}>Bad action</button>
-            <button onClick={value.setsUndefined}>Sets undefined</button>
+            <button onClick={value.badThunkAction}>Bad thunk action</button>
+            <button onClick={value.returnsUndefined}>Sets undefined</button>
             <button onClick={value.updateToTheSame}>Stays the same</button>
           </div>
         );

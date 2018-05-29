@@ -79,6 +79,31 @@ describe('React State Context', () => {
     expect(warning).toHaveBeenCalledTimes(0);
   });
 
+  it('updates after a synchronous action is called', async () => {
+    const { StateContext, Usage } = createTestComponents();
+
+    const tree = (
+      <StateContext.Provider>
+        <Usage />
+      </StateContext.Provider>
+    );
+
+    const { getByText } = renderIntoDocument(tree);
+    expect(getByText(/^The number is:/)).toHaveTextContent('The number is: 2');
+
+    fireEvent(
+      getByText('Set value'),
+      new MouseEvent('click', {
+        bubbles: true,
+        cancelable: true,
+      })
+    );
+
+    await wait();
+    expect(getByText(/^The number is:/)).toHaveTextContent('The number is: 10');
+    expect(warning).toHaveBeenCalledTimes(0);
+  });
+
   it('updates after an action is called', async () => {
     const { StateContext, Usage } = createTestComponents();
 
@@ -118,6 +143,32 @@ describe('React State Context', () => {
 
     fireEvent(
       getByText('Bad action'),
+      new MouseEvent('click', {
+        bubbles: true,
+        cancelable: true,
+      })
+    );
+
+    await wait();
+
+    expect(warning).toHaveBeenCalledTimes(1);
+    expect(warning.mock.calls[0][1]).toEqual('INVALID_ACTION_UPDATE');
+  });
+
+  it('logs an error when a thunk action returns an invalid state value', async () => {
+    const { StateContext, Usage } = createTestComponents();
+
+    const tree = (
+      <StateContext.Provider>
+        <Usage />
+      </StateContext.Provider>
+    );
+
+    const { getByText } = renderIntoDocument(tree);
+    expect(getByText(/^The number is:/)).toHaveTextContent('The number is: 2');
+
+    fireEvent(
+      getByText('Bad thunk action'),
       new MouseEvent('click', {
         bubbles: true,
         cancelable: true,
