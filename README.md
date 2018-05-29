@@ -96,20 +96,21 @@ think of them as serving a similar role to action creators.
 An action is a function that returns new state. Let's take a look at an example action:
 
 ```js
-function openModal() {
-  // The value that you return from an action will be merged with previous state.
+export function openModal() {
+  // The value that you return from an action will be shallowly
+  // merged with previous state.
   return {
     isOpen: true,
   };
 }
 ```
 
-Sometimes, you may need the previous value from state in an action. In these situations, you may return a
-function from your action. This function will be called with one value, `setState`. Use it like you would a
+Sometimes, you may need the previous value from state in an action. In these situations, you can return a
+function from your action. This function will be called with one value, `setState`. Use `setState` like you would a
 Component's `setState`:
 
 ```js
-const createTodo = function(newTodo) {
+export function createTodo(newTodo) {
   return function(setState) {
     setState(prevState => {
       // Shallow clone our todos, so that we do not modify the state
@@ -120,42 +121,29 @@ const createTodo = function(newTodo) {
       };
     });
   };
-};
+}
 ```
 
-If you are comfortable using arrow functions, you may prefer to write that action as:
+If you are comfortable using arrow functions, you may prefer to write the above action as:
 
 ```js
-const createTodo = newTodo => setState => {
-  setState(prevState => {
-    // Shallow clone our todos, so that we do not modify the state
-    const clonedTodos = [...prevState.todos];
+export function createTodo(newTodo) {
+  return setState => {
+    setState(prevState => {
+      // Shallow clone our todos, so that we do not modify the state
+      const clonedTodos = [...prevState.todos];
 
-    return {
-      todos: clonedTodos.push(newTodo),
-    };
-  });
-};
+      return {
+        todos: clonedTodos.push(newTodo),
+      };
+    });
+  };
+}
 ```
 
-> Note: the actions API was inspired by [redux-thunk](https://github.com/reduxjs/redux-thunk). If you have used that
+> Heads up! the actions API was inspired by [redux-thunk](https://github.com/reduxjs/redux-thunk). If you have used that
 > API, you may notice the similarity. In redux-thunk, the thunks are passed the arguments `(dispatch, getState)`. In this
 > library, you are passed `(setState)`.
-
-We recommend defining the actions for each individual StateContexts on an object. Here is an example actions object for a
-StateContext that manages a list of todos:
-
-```js
-const todoActions = {
-  createTodo(newTodo) {
-    // Create the todo in here
-  },
-
-  deleteTodo(todoId) {
-    // Delete the todo in here
-  },
-};
-```
 
 Along with `state`, the actions that you define will be included in the `value` that you receive from the Consumer:
 
@@ -183,10 +171,13 @@ Creates and returns a [StateContext](#state-context).
 
 ```js
 import createStateContext from 'react-state-context';
+import * as todoActions from './actions';
 
 const TodoContext = createStateContext(todoActions, {
   todos: [],
 });
+
+export default TodoContext;
 ```
 
 Once you have a StateContext, you can use it as you would any other Context.
