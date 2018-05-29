@@ -20,11 +20,7 @@ export default function shallowEquals(a, b) {
   }
 
   for (var prop in b) {
-    if (a.hasOwnProperty(prop)) {
-      if (a[prop] !== b[prop]) {
-        return false;
-      }
-    } else {
+    if (a[prop] !== b[prop]) {
       return false;
     }
   }
