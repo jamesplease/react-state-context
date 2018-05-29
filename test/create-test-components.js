@@ -27,7 +27,7 @@ const defaultActions = {
   },
 };
 
-export default function createComponents(
+export default function createTestComponents(
   actions = defaultActions,
   initialNumber = 2
 ) {

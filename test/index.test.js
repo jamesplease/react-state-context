@@ -8,7 +8,7 @@ import {
 } from 'react-testing-library';
 import 'jest-dom/extend-expect';
 import createStateContext from '../src';
-import createComponents from './components';
+import createTestComponents from './create-test-components';
 import { warning } from '../src/warning';
 
 afterEach(cleanup);
@@ -66,7 +66,7 @@ describe('React State Context', () => {
   });
 
   it('renders the initial value before actions are called', () => {
-    const { StateContext, Usage } = createComponents();
+    const { StateContext, Usage } = createTestComponents();
 
     const tree = (
       <StateContext.Provider>
@@ -80,7 +80,7 @@ describe('React State Context', () => {
   });
 
   it('updates after an action is called', async () => {
-    const { StateContext, Usage } = createComponents();
+    const { StateContext, Usage } = createTestComponents();
 
     const tree = (
       <StateContext.Provider>
@@ -105,7 +105,7 @@ describe('React State Context', () => {
   });
 
   it('logs an error when an action returns an invalid state value', async () => {
-    const { StateContext, Usage } = createComponents();
+    const { StateContext, Usage } = createTestComponents();
 
     const tree = (
       <StateContext.Provider>
@@ -131,7 +131,7 @@ describe('React State Context', () => {
   });
 
   it('does not log an error when setState is called with undefined', async () => {
-    const { StateContext, Usage } = createComponents();
+    const { StateContext, Usage } = createTestComponents();
 
     const tree = (
       <StateContext.Provider>
@@ -156,7 +156,7 @@ describe('React State Context', () => {
   });
 
   it('does not log an error when setState leaves the state shallowly equal', async () => {
-    const { StateContext, Usage } = createComponents();
+    const { StateContext, Usage } = createTestComponents();
 
     const tree = (
       <StateContext.Provider>
@@ -181,7 +181,7 @@ describe('React State Context', () => {
   });
 
   it('logs an error when non-function actions are passed', () => {
-    const { StateContext } = createComponents({
+    const { StateContext } = createTestComponents({
       stuff: true,
     });
 
@@ -192,7 +192,7 @@ describe('React State Context', () => {
   });
 
   it('logs an error when an action called "state" is passed', () => {
-    const { StateContext } = createComponents({
+    const { StateContext } = createTestComponents({
       state: () => () => {},
     });
 
