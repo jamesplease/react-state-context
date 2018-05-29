@@ -85,6 +85,8 @@ a `StateContext.Consumer`, the value passed to the render prop will include a `s
 </MyStateContext.Consumer>
 ```
 
+Like a React Component's state, the StateContext state must be an object or null.
+
 ### Actions
 
 Actions are functions that you define where you can update the state using `setState`. If you have used Redux, then you can
@@ -161,7 +163,7 @@ This library has one, default export: `createStateContext`.
 Creates and returns a [StateContext](#state-context).
 
 * `actions` _[Object]_: The actions that modify the state.
-* `[initialState]` _[any]_: Optional initial state for the StateContext.
+* `[initialState]` _[Object|null]_: Optional initial state for the StateContext.
 
 ```js
 import createStateContext from 'react-state-context';
