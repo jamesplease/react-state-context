@@ -29,7 +29,7 @@ export default function createStateContext(actions = {}, initialState) {
 
         if (typeof action !== 'function') {
           if (process.env.NODE_ENV !== 'production') {
-            console.warn(
+            console.error(
               `Warning: an action with key ${key} was passed to createStateContext that was not a function. Actions` +
                 ` must be functions. The ${key} action has been ignored. You should check your call to createStateContext().`
             );
@@ -40,7 +40,7 @@ export default function createStateContext(actions = {}, initialState) {
 
         if (key === 'state') {
           if (process.env.NODE_ENV !== 'production') {
-            console.warn(
+            console.error(
               `Warning: an action was passed to createStateContext with the key "state". This is a reserved key,` +
                 ` so your action has been ignored.`
             );
