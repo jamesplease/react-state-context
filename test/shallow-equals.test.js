@@ -25,12 +25,23 @@ describe('shallowEquals', () => {
 
   it('returns false for primitives that are not the same', () => {
     expect(shallowEquals(true, false)).toBe(false);
+    expect(shallowEquals('a', 'b')).toBe(false);
+    expect(shallowEquals(5, 10)).toBe(false);
+    expect(shallowEquals(symbolOne, symbolTwo)).toBe(false);
+
     expect(shallowEquals(true, 1)).toBe(false);
     expect(shallowEquals(true, 'asdf')).toBe(false);
     expect(shallowEquals(false, 0)).toBe(false);
     expect(shallowEquals(null, undefined)).toBe(false);
     expect(shallowEquals(undefined, '')).toBe(false);
-    expect(shallowEquals(symbolOne, symbolTwo)).toBe(false);
+    expect(shallowEquals(undefined, symbolOne)).toBe(false);
+  });
+
+  it('returns false for objects and primitives', () => {
+    expect(shallowEquals({}, true)).toBe(false);
+    expect(shallowEquals(true, {})).toBe(false);
+    expect(shallowEquals([], true)).toBe(false);
+    expect(shallowEquals(true, [])).toBe(false);
   });
 
   describe('objects', () => {
@@ -79,6 +90,10 @@ describe('shallowEquals', () => {
       expect(
         shallowEquals([{ name: { first: 'j' } }, { name: { first: 'j' } }])
       ).toBe(false);
+    });
+
+    it('returns false for array-like objects', () => {
+      expect(shallowEquals([], { length: 0 })).toBe(false);
     });
   });
 });
