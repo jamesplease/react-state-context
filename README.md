@@ -90,10 +90,10 @@ Like a React Component's state, the StateContext state must be an object or null
 
 ### Actions
 
-Actions are functions that you define where you can update the state using `setState`. If you have used Redux, then you can
+Actions are functions that you define, and they are how you modify the state. If you have used Redux, then you can
 think of them as serving a similar role to action creators.
 
-An action is a function that returns new state. Let's take a look at an example action:
+To update state, you can return a new value from your action. Let's take a look at an example action:
 
 ```js
 export function openModal() {
@@ -105,30 +105,22 @@ export function openModal() {
 }
 ```
 
-Sometimes, you may need the previous value from state in an action. In these situations, you can return a
-function from your action. This function will be called with one value, `setState`. Use `setState` like you would a
-Component's `setState`:
+When you use an action in your application, you can pass it arguments. You can use these arguments in your actions.
+Let's update the above action to toggle the modal state instead:
+
+```js
+export function toggleModal(isOpen) {
+  return { isOpen };
+}
+```
+
+Sometimes, you may need the previous state within an action. In these situations, you can return a
+function from your action. This function will be called with one argument, `setState`. Use `setState` to update
+the state as you would using a React Component's `setState`:
 
 ```js
 export function createTodo(newTodo) {
   return function(setState) {
-    setState(prevState => {
-      // Shallow clone our todos, so that we do not modify the state
-      const clonedTodos = [...prevState.todos];
-
-      return {
-        todos: clonedTodos.push(newTodo),
-      };
-    });
-  };
-}
-```
-
-If you are comfortable using arrow functions, you may prefer to write the above action as:
-
-```js
-export function createTodo(newTodo) {
-  return setState => {
     setState(prevState => {
       // Shallow clone our todos, so that we do not modify the state
       const clonedTodos = [...prevState.todos];
