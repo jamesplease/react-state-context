@@ -95,23 +95,32 @@ think of them as serving a similar role to action creators.
 An action is a function that returns another function. Let's take a look at an example action:
 
 ```js
-const createTodo = function(setState) {
+const openModal = function(setState) {
   // Return a function from your action. This is the function that your application will call.
-  // In this action, we allow a user to pass a newTodo to be added to the list of todos.
-  return function(newTodo) {
-    setState(prevState => {
-      // Shallow clone our todos, so that we do not modify the state
-      const clonedTodos = [...prevState.todos];
-
-      return {
-        todos: clonedTodos.push(newTodo),
-      };
+  return function() {
+    // Use `setState` as you would in a Component to update the value of StateContext.
+    setState({
+      isOpen: true,
     });
   };
 };
 ```
 
 If you are comfortable using arrow functions, you may prefer to write the above action in the following way:
+
+```js
+const openModal = setState => () => {
+  setState({
+    isOpen: true,
+  });
+};
+```
+
+Sometimes, you may need the previous value from state when updating. The API for doing this matches the Component
+`setState` API: pass a function as the first argument to `setState`. The first argument to this function will be the
+previous state.
+
+Here's an example:
 
 ```js
 const createTodo = setState => newTodo => {
@@ -131,11 +140,11 @@ StateContext that manages a list of todos:
 
 ```js
 const todoActions = {
-  createTodo: (setState) => newTodo => {
+  createTodo: setState => newTodo => {
     // Create a todo in here.
   },
 
-  deleteTodo = (setState) => (id) => {
+  deleteTodo = setState => id => {
     // Delete a todo in here.
   }
 };
