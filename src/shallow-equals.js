@@ -4,7 +4,8 @@ export default function shallowEquals(a, b) {
     return true;
   }
 
-  // If either are null, then we can do a
+  // When either value are null, then a strict equals comparison will return
+  // the expected value.
   if (a === null || b === null) {
     return a === b;
   }
@@ -13,7 +14,7 @@ export default function shallowEquals(a, b) {
   const bKeys = Object.keys(b);
 
   // If they are both objects, then they must have the same
-  // number of keys.
+  // number of keys. Otherwise, they can't be shallowly equal!
   if (aKeys.length !== bKeys.length) {
     return false;
   }
