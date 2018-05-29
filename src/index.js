@@ -103,8 +103,8 @@ export default function createStateContext(actions = {}, initialState) {
         if (!isValidState(newState)) {
           if (process.env.NODE_ENV !== 'production') {
             console.error(
-              `Warning: StateContext values must be set to an object or null. An action returned an invalid value.` +
-                ` This value has been ignored, and the state has not been updated.`
+              `Warning: The value returned from StateContext actions must be an object or null. You called an action that` +
+                ` returned an invalid value. This value has been ignored, and the state has not been updated.`
             );
           }
 
