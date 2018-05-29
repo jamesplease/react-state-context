@@ -112,7 +112,7 @@ const createTodo = function(setState) {
 If you are comfortable using arrow functions, you may prefer to write the above action in the following way:
 
 ```js
-const createTodo = (setState, getState) => newTodo => {
+const createTodo = setState => newTodo => {
   setState(prevState => {
     // Shallow clone our todos, so that we do not modify the state
     const clonedTodos = [...prevState.todos];
@@ -129,11 +129,11 @@ StateContext that manages a list of todos:
 
 ```js
 const todoActions = {
-  createTodo: (setState, getState) => newTodo => {
+  createTodo: (setState) => newTodo => {
     // Create a todo in here.
   },
 
-  deleteTodo = (setState, getState) => (id) => {
+  deleteTodo = (setState) => (id) => {
     // Delete a todo in here.
   }
 };
