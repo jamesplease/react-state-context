@@ -1,5 +1,18 @@
 # Changelog
 
+### v0.3.0 (2018/5/29)
+
+This update is largely a response to @gaearon's great feedback.
+
+* The Provider is now more performant. It will no longer render its Consumers
+  when its parents rerender.
+* Another performance improvement: the Provider will only render its Consumers
+  when the state value has changed (using a shallow equality check).
+* The actions API is simpler, drawing inspiration from redux-thunk. Note that
+  this is a breaking change, although no functionality has been removed.
+* State must now be an object or null, like a React component's state.
+* New, helpful warnings have been introduced.
+
 ### v0.2.1 (2018/5/25)
 
 * Fixes a bug where calling `setState` would not work as intended.

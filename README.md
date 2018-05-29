@@ -2,6 +2,7 @@
 
 [![Travis build status](http://img.shields.io/travis/jamesplease/react-state-context.svg?style=flat)](https://travis-ci.org/jamesplease/react-state-context)
 [![npm version](https://img.shields.io/npm/v/react-state-context.svg)](https://www.npmjs.com/package/react-state-context)
+[![Test Coverage](https://coveralls.io/repos/github/jamesplease/react-state-context/badge.svg?branch=master)](https://coveralls.io/github/jamesplease/react-state-context?branch=master)
 [![gzip size](http://img.badgesize.io/https://unpkg.com/react-state-context/dist/react-state-context.min.js?compression=gzip)](https://unpkg.com/react-state-context/dist/react-state-context.min.js)
 
 Lightweight state management using React Context.
@@ -17,7 +18,7 @@ Lightweight state management using React Context.
 
 When you are getting started with React, storing all of your application state within individual Components'
 [state](https://reactjs.org/docs/state-and-lifecycle.html#adding-local-state-to-a-class) tends to work well.
-Component state is really useful!
+Component state is a good solution for storing data.
 
 A limitation of component state is that it can be tedious to share it between components
 that are not near one another within your application's component tree. This problem may become more pronounced
@@ -29,10 +30,12 @@ mechanism to more easily share data between components, even when they are not c
 
 As delightful as the Context API is, it is a low-level tool, so using it directly can be a little verbose sometimes.
 It also doesn't provide opinions on _how_ it should be used, so it can take some time to figure out an organized system for
-working with it. This is where **React State Context** comes in.
+working with it. Lastly, it has [some caveats](https://reactjs.org/docs/context.html#caveats) that can trip you up. This
+is where **React State Context** comes in.
 
 React State Context is a thin wrapper around Context that provides a small amount of structure. This structure
-helps reduce the boilerplate that you must write, and it also helps you to stay organized.
+helps reduce the boilerplate that you must write, and it also helps you to stay organized. Plus, when you use State
+Context, you can be confident that you are avoiding the caveats that accompany using Context directly.
 
 ### Installation
 
@@ -79,83 +82,68 @@ a `StateContext.Consumer`, the value passed to the render prop will include a `s
 
 ```jsx
 <MyStateContext.Consumer>
-  {(value) => {
+  {value => {
     console.log('The current state is:', value.state);
   }}
 </MyStateContext.Consumer>
 ```
 
+Like a React Component's state, the StateContext state must be an object or null.
+
 ### Actions
 
-Actions are functions that you define where you can update the state using `setState`. If you have used Redux, then you can
+Actions are functions that you define, and they are how you modify the state. If you have used Redux, then you can
 think of them as serving a similar role to action creators.
 
-An action is a function that returns another function. Let's take a look at an example action:
+To update state, you can return a new value from your action. Let's take a look at an example action:
 
 ```js
-const createTodo = function(setState, getState) {
-  // You can update the state using `setState`:
-  // setState({ someValue: true })
-  //
-  // To get the current state, you can use `getState`:
-  // const state = getState();
-
-  // Return a function from your action. This is the function that your application will call.
-  // In this action, we allow a user to pass a newTodo to be added to the list of todos.
-  return function(newTodo) {
-    // Shallow clone our todos, so that we do not modify the state
-    const clonedTodos = [...getState().todos];
-
-    setState({
-      todos: clonedTodos.push(newTodo)
-    });
-
-    // If you would like, you can return a value from your actions.
-    return newTodo;
-  }
+export function openModal() {
+  // The value that you return from an action will be shallowly
+  // merged with previous state.
+  return {
+    isOpen: true,
+  };
 }
 ```
 
-If you are comfortable using arrow functions, you may prefer to write the above action in the following way:
+When you use an action in your application, you can pass it arguments. You can use these arguments in your actions.
+Let's update the above action to toggle the modal state instead:
 
 ```js
-const createTodo = (setState, getState) => (newTodo) => {
-  const clonedTodos = [...getState().todos];
-
-  setState({
-    todos: clonedTodos.push(newTodo)
-  });
-
-  return newTodo;
+export function toggleModal(isOpen) {
+  return { isOpen };
 }
 ```
 
-We recommend defining the actions for each individual StateContexts on an object. Here is an example actions object for a
-StateContext that manages a list of todos:
+Sometimes, you may need the previous state within an action. In these situations, you can return a
+function from your action. This function will be called with one argument, `setState`. Use `setState` to update
+the state as you would using a React Component's `setState`:
 
 ```js
-const todoActions = {
-  createTodo: (setState, getState) => newTodo => {
-    const clonedTodos = [...getState().todos];
+export function createTodo(newTodo) {
+  return function(setState) {
+    setState(prevState => {
+      // Shallow clone our todos, so that we do not modify the state
+      const clonedTodos = [...prevState.todos];
 
-    setState({
-      todos: clonedTodos.push(newTodo)
+      return {
+        todos: clonedTodos.push(newTodo),
+      };
     });
-
-    return newTodo;
-  },
-
-  deleteTodo = (setState, getState) => (id) => {
-    // Implement some logic to delete the todo.
-  }
-};
+  };
+}
 ```
+
+> Heads up! the actions API was inspired by [redux-thunk](https://github.com/reduxjs/redux-thunk). If you have used that
+> API, you may notice the similarity. In redux-thunk, the thunks are passed the arguments `(dispatch, getState)`. In this
+> library, you are passed `(setState)`.
 
 Along with `state`, the actions that you define will be included in the `value` that you receive from the Consumer:
 
 ```jsx
 <MyStateContext.Consumer>
-  {(value) => {
+  {value => {
     console.log('I can add a todo using:', value.createTodo);
     console.log('I can delete todos using:', value.deleteTodo);
   }}
@@ -172,15 +160,18 @@ This library has one, default export: `createStateContext`.
 
 Creates and returns a [StateContext](#state-context).
 
-- `actions` *[Object]*: The actions that modify the state.
-- `[initialState]` *[any]*: Optional initial state for the StateContext.
+* `actions` _[Object]_: The actions that modify the state.
+* `[initialState]` _[Object|null]_: Optional initial state for the StateContext.
 
 ```js
 import createStateContext from 'react-state-context';
+import * as todoActions from './actions';
 
 const TodoContext = createStateContext(todoActions, {
-  todos: []
+  todos: [],
 });
+
+export default TodoContext;
 ```
 
 Once you have a StateContext, you can use it as you would any other Context.
@@ -192,7 +183,7 @@ export function App() {
   // To begin, you must render the Provider somewhere high up in the Component tree.
   return (
     <TodoContext.Provider>
-      <SomeComponent/>
+      <SomeComponent />
     </TodoContext.Provider>
   );
 }
