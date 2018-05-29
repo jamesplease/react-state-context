@@ -18,7 +18,7 @@ Lightweight state management using React Context.
 
 When you are getting started with React, storing all of your application state within individual Components'
 [state](https://reactjs.org/docs/state-and-lifecycle.html#adding-local-state-to-a-class) tends to work well.
-Component state is really useful!
+Component state is a good solution for storing data.
 
 A limitation of component state is that it can be tedious to share it between components
 that are not near one another within your application's component tree. This problem may become more pronounced
@@ -30,10 +30,12 @@ mechanism to more easily share data between components, even when they are not c
 
 As delightful as the Context API is, it is a low-level tool, so using it directly can be a little verbose sometimes.
 It also doesn't provide opinions on _how_ it should be used, so it can take some time to figure out an organized system for
-working with it. This is where **React State Context** comes in.
+working with it. Lastly, it has [some caveats](https://reactjs.org/docs/context.html#caveats) that can trip you up. This
+is where **React State Context** comes in.
 
 React State Context is a thin wrapper around Context that provides a small amount of structure. This structure
-helps reduce the boilerplate that you must write, and it also helps you to stay organized.
+helps reduce the boilerplate that you must write, and it also helps you to stay organized. Plus, when you use State
+Context, you can be confident that you are avoiding the caveats that accompany using Context directly.
 
 ### Installation
 
