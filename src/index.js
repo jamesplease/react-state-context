@@ -2,7 +2,15 @@ import React, { Component } from 'react';
 import createReactContext from 'create-react-context';
 import shallowEquals from './shallow-equals';
 
-export default function createStateContext(actions = {}, initialState = null) {
+function isValidState(state) {
+  if (typeof state !== 'object' || Array.isArray(state)) {
+    return false;
+  } else {
+    return true;
+  }
+}
+
+export default function createStateContext(actions = {}, initialState) {
   const Context = createReactContext();
 
   class ProviderComponent extends Component {
@@ -22,7 +30,7 @@ export default function createStateContext(actions = {}, initialState = null) {
         if (typeof action !== 'function') {
           if (process.env.NODE_ENV !== 'production') {
             console.warn(
-              `An action with key ${key} was passed to createStateContext that was not a function. Actions` +
+              `Warning: an action with key ${key} was passed to createStateContext that was not a function. Actions` +
                 ` must be functions. The ${key} action has been ignored. You should check your call to createStateContext().`
             );
           }
@@ -33,7 +41,7 @@ export default function createStateContext(actions = {}, initialState = null) {
         if (key === 'state') {
           if (process.env.NODE_ENV !== 'production') {
             console.warn(
-              `An action was passed to createStateContext with the key "state". This is a reserved key,` +
+              `Warning: an action was passed to createStateContext with the key "state". This is a reserved key,` +
                 ` so your action has been ignored.`
             );
           }
@@ -44,6 +52,18 @@ export default function createStateContext(actions = {}, initialState = null) {
         // We pass a wrapper of `setState` to every action that you pass in.
         // This is what allows you to update the state.
         boundActions[key] = action(this.setStateWrapper);
+      }
+
+      let initialStateToUse;
+      if (!isValidState(initialState)) {
+        if (process.env.NODE_ENV !== 'production') {
+          console.error(
+            `Warning: StateContext state must be an object or null. You passed an invalid value to createStateContext` +
+              ` that has been ignored.`
+          );
+        }
+      } else {
+        initialStateToUse = initialState;
       }
 
       // The Provider's `value` is this Component's state.
@@ -57,7 +77,7 @@ export default function createStateContext(actions = {}, initialState = null) {
       // Together, those two facts lead to there being a state attribute on this Component's
       // state.
       this.state = {
-        state: initialState || null,
+        state: initialStateToUse,
         ...boundActions,
       };
     }
@@ -74,11 +94,28 @@ export default function createStateContext(actions = {}, initialState = null) {
             ? stateUpdate(prevState.state)
             : stateUpdate;
 
+        const newStateType = typeof newState;
+
+        if (typeof newState === 'undefined') {
+          return;
+        }
+
+        if (!isValidState(newState)) {
+          if (process.env.NODE_ENV !== 'production') {
+            console.error(
+              `Warning: StateContext values must be set to an object or null. An action returned an invalid value.` +
+                ` This value has been ignored, and the state has not been updated.`
+            );
+          }
+
+          return;
+        }
+
         // To compute the _potential_ new state, we shallow merge the two.
-        // Heads up: this needs to be made more robust before this PR can be merged. This really
-        // only works for objects right now, and I don't intend to enforce the structure of StateContext
-        // state in that way.
-        const mergedState = Object.assign({}, prevState.state, newState);
+        let mergedState =
+          newState === null
+            ? null
+            : Object.assign({}, prevState.state, newState);
 
         // If the previous value and the new value are shallowly equal, then we avoid the update altogether.
         // In this way, a StateContext.Provider behaves similarly to a PureComponent.
