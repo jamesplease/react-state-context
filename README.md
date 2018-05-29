@@ -28,8 +28,8 @@ mechanism to more easily share data between components, even when they are not c
 
 As delightful as the Context API is, it is a low-level tool, so using it directly can be a little verbose sometimes.
 It also doesn't provide opinions on _how_ it should be used, so it can take some time to figure out an organized system for
-working with it. Lastly, it has [some caveats](https://reactjs.org/docs/context.html#caveats) that can trip you up. This
-is where **React State Context** comes in.
+working with it. Lastly, it has [some caveats](https://reactjs.org/docs/context.html#caveats) that can trip you up. For these
+reasons I created **React State Context**.
 
 React State Context is a thin wrapper around Context that provides a small amount of structure. This structure
 helps reduce the boilerplate that you must write, and it also helps you to stay organized. Plus, when you use State
@@ -60,6 +60,9 @@ A StateContext is a wrapper around a normal React Context object. Like a regular
 
 You use StateContexts in the same way as regular Context. If you have used the new Context API, then it should feel
 familiar to use StateContexts. If you haven't, don't worry. If I was able to learn it, then you can, too!
+
+> :information_desk_person: The [React documentation on Context](https://reactjs.org/docs/context.html#when-to-use-context)
+> is a great resource. It can be helpful to familiarize yourself with the content on that page before using State Context.
 
 What is different about a StateContext is that the value that the Consumer provides you with has the
 following structure:
@@ -93,7 +96,7 @@ Like a React Component's state, the StateContext state must be an object or null
 Actions are functions that you define, and they are how you modify the state. If you have used Redux, then you can
 think of them as serving a similar role to action creators.
 
-To update state, you can return a new value from your action. The value that you return will be shallowly merged
+To update state, return a new value from your action. The returned value will be shallowly merged
 with the existing state.
 
 Let's take a look at an example action:
@@ -106,10 +109,8 @@ export function openModal() {
 }
 ```
 
-When you call an action from within your application, you can pass arguments to it. You can use these arguments within
-your actions.
-
-Let's create an action to toggle the modal state based on what is passed into the action:
+When you call an action from within your application, you can pass arguments to it. Let's use this to
+create an action to toggle a modal state based on what is passed into the action:
 
 ```js
 export function toggleModal(isOpen) {
@@ -138,9 +139,9 @@ export function createTodo(newTodo) {
 
 Note that `setState` differs from the Component `setState` in that there is no second argument.
 
-> :information_desk_person: Heads up! The actions API was inspired by [redux-thunk](https://github.com/reduxjs/redux-thunk). If you have used that
-> API, you may notice the similarity. In redux-thunk, the thunks are passed the arguments `(dispatch, getState)`. In this
-> library, you are passed `(setState)`.
+> :information_desk_person: Heads up! The actions API was inspired by [redux-thunk](https://github.com/reduxjs/redux-thunk).
+> If you have used that API, you may notice the similarity. In redux-thunk, the thunks are passed the arguments `(dispatch, getState)`.
+> In this library, you are passed `(setState)`.
 
 Along with `state`, the actions that you define will be included in the `value` that you receive from the Consumer:
 
@@ -177,7 +178,7 @@ const TodoContext = createStateContext(todoActions, {
 export default TodoContext;
 ```
 
-Once you have a StateContext, you can use it as you would any other Context.
+Use a StateContext as you would any other Context.
 
 ```jsx
 import TodoContext from './contexts/todo';
