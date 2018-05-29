@@ -93,20 +93,23 @@ Like a React Component's state, the StateContext state must be an object or null
 Actions are functions that you define, and they are how you modify the state. If you have used Redux, then you can
 think of them as serving a similar role to action creators.
 
-To update state, you can return a new value from your action. Let's take a look at an example action:
+To update state, you can return a new value from your action. The value that you return will be shallowly merged
+with the existing state.
+
+Let's take a look at an example action:
 
 ```js
 export function openModal() {
-  // The value that you return from an action will be shallowly
-  // merged with previous state.
   return {
     isOpen: true,
   };
 }
 ```
 
-When you use an action in your application, you can pass it arguments. You can use these arguments in your actions.
-Let's update the above action to toggle the modal state instead:
+When you call an action from within your application, you can pass arguments to it. You can use these arguments within
+your actions.
+
+Let's create an action to toggle the modal state based on what is passed into the action:
 
 ```js
 export function toggleModal(isOpen) {
@@ -133,7 +136,9 @@ export function createTodo(newTodo) {
 }
 ```
 
-> Heads up! the actions API was inspired by [redux-thunk](https://github.com/reduxjs/redux-thunk). If you have used that
+Note that `setState` differs from the Component `setState` in that there is no second argument.
+
+> :information_desk_person: Heads up! The actions API was inspired by [redux-thunk](https://github.com/reduxjs/redux-thunk). If you have used that
 > API, you may notice the similarity. In redux-thunk, the thunks are passed the arguments `(dispatch, getState)`. In this
 > library, you are passed `(setState)`.
 
@@ -148,7 +153,7 @@ Along with `state`, the actions that you define will be included in the `value` 
 </MyStateContext.Consumer>
 ```
 
-Once you feel comfortable with these concepts, you should be ready to start using React State Context.
+Once you feel comfortable with these concepts, you are ready to start using React State Context.
 
 ## API
 
