@@ -79,7 +79,7 @@ a `StateContext.Consumer`, the value passed to the render prop will include a `s
 
 ```jsx
 <MyStateContext.Consumer>
-  {(value) => {
+  {value => {
     console.log('The current state is:', value.state);
   }}
 </MyStateContext.Consumer>
@@ -93,41 +93,35 @@ think of them as serving a similar role to action creators.
 An action is a function that returns another function. Let's take a look at an example action:
 
 ```js
-const createTodo = function(setState, getState) {
-  // You can update the state using `setState`:
-  // setState({ someValue: true })
-  //
-  // To get the current state, you can use `getState`:
-  // const state = getState();
-
+const createTodo = function(setState) {
   // Return a function from your action. This is the function that your application will call.
   // In this action, we allow a user to pass a newTodo to be added to the list of todos.
   return function(newTodo) {
-    // Shallow clone our todos, so that we do not modify the state
-    const clonedTodos = [...getState().todos];
+    setState(prevState => {
+      // Shallow clone our todos, so that we do not modify the state
+      const clonedTodos = [...prevState.todos];
 
-    setState({
-      todos: clonedTodos.push(newTodo)
+      return {
+        todos: clonedTodos.push(newTodo),
+      };
     });
-
-    // If you would like, you can return a value from your actions.
-    return newTodo;
-  }
-}
+  };
+};
 ```
 
 If you are comfortable using arrow functions, you may prefer to write the above action in the following way:
 
 ```js
-const createTodo = (setState, getState) => (newTodo) => {
-  const clonedTodos = [...getState().todos];
+const createTodo = (setState, getState) => newTodo => {
+  setState(prevState => {
+    // Shallow clone our todos, so that we do not modify the state
+    const clonedTodos = [...prevState.todos];
 
-  setState({
-    todos: clonedTodos.push(newTodo)
+    return {
+      todos: clonedTodos.push(newTodo),
+    };
   });
-
-  return newTodo;
-}
+};
 ```
 
 We recommend defining the actions for each individual StateContexts on an object. Here is an example actions object for a
@@ -136,17 +130,11 @@ StateContext that manages a list of todos:
 ```js
 const todoActions = {
   createTodo: (setState, getState) => newTodo => {
-    const clonedTodos = [...getState().todos];
-
-    setState({
-      todos: clonedTodos.push(newTodo)
-    });
-
-    return newTodo;
+    // Create a todo in here.
   },
 
   deleteTodo = (setState, getState) => (id) => {
-    // Implement some logic to delete the todo.
+    // Delete a todo in here.
   }
 };
 ```
@@ -155,7 +143,7 @@ Along with `state`, the actions that you define will be included in the `value` 
 
 ```jsx
 <MyStateContext.Consumer>
-  {(value) => {
+  {value => {
     console.log('I can add a todo using:', value.createTodo);
     console.log('I can delete todos using:', value.deleteTodo);
   }}
@@ -172,14 +160,14 @@ This library has one, default export: `createStateContext`.
 
 Creates and returns a [StateContext](#state-context).
 
-- `actions` *[Object]*: The actions that modify the state.
-- `[initialState]` *[any]*: Optional initial state for the StateContext.
+* `actions` _[Object]_: The actions that modify the state.
+* `[initialState]` _[any]_: Optional initial state for the StateContext.
 
 ```js
 import createStateContext from 'react-state-context';
 
 const TodoContext = createStateContext(todoActions, {
-  todos: []
+  todos: [],
 });
 ```
 
@@ -192,7 +180,7 @@ export function App() {
   // To begin, you must render the Provider somewhere high up in the Component tree.
   return (
     <TodoContext.Provider>
-      <SomeComponent/>
+      <SomeComponent />
     </TodoContext.Provider>
   );
 }
