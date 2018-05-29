@@ -2,6 +2,7 @@
 
 [![Travis build status](http://img.shields.io/travis/jamesplease/react-state-context.svg?style=flat)](https://travis-ci.org/jamesplease/react-state-context)
 [![npm version](https://img.shields.io/npm/v/react-state-context.svg)](https://www.npmjs.com/package/react-state-context)
+[![Test Coverage](https://coveralls.io/repos/github/jamesplease/react-state-context/badge.svg?branch=master)](https://coveralls.io/github/jamesplease/react-state-context?branch=master)
 [![gzip size](http://img.badgesize.io/https://unpkg.com/react-state-context/dist/react-state-context.min.js?compression=gzip)](https://unpkg.com/react-state-context/dist/react-state-context.min.js)
 
 Lightweight state management using React Context.
