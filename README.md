@@ -227,7 +227,7 @@ API for older React versions.
 The reason that I initially started using Redux was to more easily share data between components. Although Redux can seem like a simple system once you become
 familiar with it, the number of concepts it has can make it daunting to newcomers. At least, that's how I felt when I was learning it.
 
-For me, React State Context solves the problems that I originally used Redux for in a more straightforward way, which is why I prefer it.
+For me, React State Context solves the problems that I originally used Redux for in a more straightforward way, which is why I think a solution like this seems promising.
 
 #### What does one lose by migrating away from Redux?
 
