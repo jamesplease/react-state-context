@@ -5,14 +5,7 @@
 [![Test Coverage](https://coveralls.io/repos/github/jamesplease/react-state-context/badge.svg?branch=master)](https://coveralls.io/github/jamesplease/react-state-context?branch=master)
 [![gzip size](http://img.badgesize.io/https://unpkg.com/react-state-context/dist/react-state-context.min.js?compression=gzip)](https://unpkg.com/react-state-context/dist/react-state-context.min.js)
 
----
-### ⚠️ Don't start using this ⚠️
-
-If you're already using this, then no worries. It will continue to work just fine. I don't recommend adopting it because [hooks](https://reactjs.org/docs/hooks-intro.html) will be the appropriate solution for state management in an upcoming release of React, so there is no reason to start using an abstraction such as this.
-
----
-
-Experimental lightweight state management using React Context.
+Lightweight state management using React Context.
 
 ✔ Built on React primitives  
 ✔ Provides a familiar API  
