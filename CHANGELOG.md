@@ -1,5 +1,9 @@
 # Changelog
 
+### v1.0.0 (2019/2/12)
+
+No changes; this release marks API stability.
+
 ### v0.3.0 (2018/5/29)
 
 This update is largely a response to @gaearon's great feedback.
