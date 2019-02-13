@@ -126,12 +126,9 @@ the state as you would using a React Component's `setState`:
 export function createTodo(newTodo) {
   return function(setState) {
     setState(prevState => {
-      // Shallow clone our todos, so that we do not modify the state
-      const clonedTodos = [...prevState.todos];
-
       return {
-        todos: clonedTodos.push(newTodo),
-      };
+        todos: prevState.todos.concat([newTodo])
+      );
     });
   };
 }
